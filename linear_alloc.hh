@@ -1,0 +1,2 @@
+struct Linear_Alloc {
+};
