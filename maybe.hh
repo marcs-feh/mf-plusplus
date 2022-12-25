@@ -49,6 +49,11 @@ struct Maybe {
 };
 
 template<class T>
+bool operator==(const Maybe<T>& left, const Nil& nil_val){
+	return left.is_nil;
+}
+
+template<class T>
 bool operator==(const Maybe<T>& left, const T& right){
 	if(left.is_nil){ return false; }
 	return left.data == right;
@@ -68,6 +73,11 @@ bool operator==(const Maybe<T>& left, const Maybe<T>& right){
 	else {
 		return left.data == right.data;
 	}
+}
+
+template<class T>
+bool operator!=(const Maybe<T>& left, const Nil& nil_val){
+	return !(left.is_nil);
 }
 
 template<class T>
