@@ -3,19 +3,24 @@
 
 // TODO: integrate with string type
 
+#define COL_RED   "\e[0;31m"
+#define COL_GREEN "\e[0;32m"
+#define COL_CYAN  "\e[0;36m"
+#define COL_RESET "\e[0m"
+
 #define Test_Init(name) \
 	bool test_ok_ = true;\
 	int test_failed_ = 0;\
 	int test_count_ = 0;\
 	const char* test_name_ = #name;\
-	fprintf(stderr, "[ %s ]\n", #name);
+	fprintf(stderr, "[ %s%s%s ]\n", COL_CYAN, #name, COL_RESET);
 
-#define Test_Eq(expect, expr) {\
+#define Test_Exp(expect, expr) {\
 	test_count_ += 1;\
 	if((expect) == (expr)){\
-		fprintf(stderr, "\tOK    ");\
+		fprintf(stderr, "\t%sOK%s    ", COL_GREEN, COL_RESET);\
 	} else {\
-		fprintf(stderr, "\tFAIL  ");\
+		fprintf(stderr, "\t%sFAIL%s  ", COL_RED, COL_RESET);\
 		test_ok_ = false;\
 		test_failed_ += 1;\
 	}\
@@ -24,8 +29,8 @@
 
 #define Test_End() \
 	if(test_ok_){\
-		fprintf(stderr, "[PASSED] %s\n", test_name_);\
+		fprintf(stderr, "[ %sPASSED%s ] ok: %d/%d\n", COL_GREEN, COL_RESET, test_count_ - test_failed_, test_count_);\
 	} else {\
-		fprintf(stderr, "[FAILED] %s\n", test_name_);\
+		fprintf(stderr, "[ %sFAILED%s ] ok: %d/%d\n", COL_RED, COL_RESET, test_count_ - test_failed_, test_count_);\
 	}
 

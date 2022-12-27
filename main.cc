@@ -11,9 +11,9 @@ int divide(int a, int b){
 
 void test_divide() {
 	Test_Init(Divide);
-	Test_Eq(3, divide(9, 3));
-	Test_Eq(3, divide(9, 3));
-	Test_Eq(4, divide(1, 0));
+	Test_Exp(3, divide(9, 3));
+	Test_Exp(3, divide(9, 3));
+	Test_Exp(0, divide(1, 0));
 	Test_End();
 }
 int main(int argc, const char** argv){
