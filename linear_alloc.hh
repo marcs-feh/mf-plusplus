@@ -1,6 +1,10 @@
 #include "types.hh"
 #include "alloc.hh"
 
+// TODO: resize and free
+
+// Linear Allocator
+
 struct Linear_Alloc {
 	byte* buf;
 	usize cap;
@@ -30,7 +34,9 @@ struct Linear_Alloc {
 		return ptr;
 	}
 
-	void free(){}
+	void free_all(){
+		off = 0;
+	}
 
 	Linear_Alloc(void* buf, usize buf_len, usize align = alignof(max_align_t)){
 		this->buf   = static_cast<byte*>(buf);
@@ -42,5 +48,7 @@ struct Linear_Alloc {
 
 template<class T>
 T* make(usize n, Linear_Alloc& al){
+	T* ptr = static_cast<T*>(al.alloc(sizeof(T) * n));
+	return ptr;
 }
 
