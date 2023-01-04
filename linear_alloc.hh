@@ -2,6 +2,8 @@
 #include "alloc.hh"
 
 // TODO: resize and free
+#include <iostream>
+#define print(x) std::cout << x << '\n'
 
 // Linear Allocator
 
@@ -12,17 +14,19 @@ struct Linear_Alloc {
 	usize align;
 
 	void* alloc(usize nbytes){
-		uintptr p   = reinterpret_cast<uintptr>(buf + off);
-		uintptr lim = reinterpret_cast<uintptr>(buf + cap);
-		p = align_forward_ptr(p, align);
+		uintptr base = reinterpret_cast<uintptr>(buf + off);
+		uintptr ptr  = align_forward_ptr(base, align);
+		uintptr lim  = reinterpret_cast<uintptr>(buf + cap);
+
 		// Not enough space
-		if((p + nbytes) >= lim){
-			assert(0 && "Failed allocation");
+		if((ptr + nbytes) > lim){
+			//assert(0 && "Failed allocation");
 			return nullptr;
 		}
 
-		off = lim - p + nbytes;
-		return reinterpret_cast<void*>(p);
+		off = (ptr - base) + nbytes;
+
+		return reinterpret_cast<void*>(ptr);
 	}
 
 	void* zalloc(usize nbytes){

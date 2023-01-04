@@ -4,9 +4,15 @@
 // TODO: integrate with string type
 
 #define COL_RED   "\e[0;31m"
+#define COL_MAG   "\e[0;35m"
 #define COL_GREEN "\e[0;32m"
 #define COL_CYAN  "\e[0;36m"
+#define COL_BLK   "\e[1;30m"
 #define COL_RESET "\e[0m"
+
+static inline void Test_Log(const char* msg){
+	fprintf(stderr, "\t%s%s%s\n", COL_MAG, msg, COL_RESET);
+}
 
 #define Test_Init(name) \
 	bool test_ok_ = true;\
@@ -24,7 +30,7 @@
 		test_ok_ = false;\
 		test_failed_ += 1;\
 	}\
-	fprintf(stderr, "%s => %s\n", #expr, #expect);\
+	fprintf(stderr, "%s %s::%s %s\n", #expr, COL_BLK, COL_RESET, #expect);\
 }
 
 #define Test_End() \
@@ -33,4 +39,5 @@
 	} else {\
 		fprintf(stderr, "[ %sFAILED%s ] ok: %d/%d\n", COL_RED, COL_RESET, test_count_ - test_failed_, test_count_);\
 	}
+
 
