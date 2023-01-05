@@ -4,6 +4,7 @@
 #include "maybe.hh"
 #include "test.hh"
 #include "linear_alloc.hh"
+#include "ring_buf_alloc.hh"
 
 #define print(x) std::cout << x << '\n'
 
@@ -16,9 +17,13 @@ i32 test_linear_alloc(){
 	Test_Exp(buflen, al.cap);
 	Test_Exp(0, al.off);
 	Test_Exp(align, al.align);
+	Test_Exp(true, nullptr != al.buf);
 
 	Test_Log("alloc(0)");
 	Test_Exp(nullptr, al.alloc(0));
+
+	Test_Log("alloc(al.cap + 1)");
+	Test_Exp(nullptr, al.alloc(al.cap + 1));
 
 	Test_Log("Fill");
 	Test_Exp(false, al.buf == nullptr);
@@ -27,7 +32,6 @@ i32 test_linear_alloc(){
 	Test_Exp(buflen, al.off);
 
 	Test_Log("Fail alloc");
-	Test_Exp(false, al.buf == nullptr);
 	i32* vec2 = make<i32>(1, al);
 	Test_Exp(nullptr, vec2);
 	Test_Exp(buflen, al.off);
@@ -49,7 +53,14 @@ i32 test_linear_alloc(){
 
 	Test_End();
 }
+
+i32 test_ring_alloc(){
+	Test_Init("Circular allocator");
+
+	Test_End();
+}
+
 int main(int argc, const char** argv){
-	i32 results = test_linear_alloc();
+	i32 results = test_linear_alloc() + test_ring_alloc();
 	return results;
 }

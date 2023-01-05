@@ -1,13 +1,14 @@
+#ifndef INCLUDE_LINEAR_ALLOC_HH_
+#define INCLUDE_LINEAR_ALLOC_HH_
+
 #include "types.hh"
 #include "alloc.hh"
 
-#include <cstdlib>
 #include <stdlib.h>
 
 // TODO: resize and free
 
 // Linear Allocator
-
 struct Linear_Alloc {
 	byte* buf;
 	usize cap;
@@ -15,7 +16,7 @@ struct Linear_Alloc {
 	usize align;
 
 	void* alloc(usize nbytes){
-		if(nbytes == 0){ return nullptr; }
+		if(nbytes == 0 || nbytes > cap){ return nullptr; }
 
 		uintptr base = reinterpret_cast<uintptr>(buf + off);
 		uintptr ptr  = align_forward_ptr(base, align);
@@ -34,9 +35,11 @@ struct Linear_Alloc {
 
 	void* zalloc(usize nbytes){
 		void* ptr = this->alloc(nbytes);
-		byte* zero = static_cast<byte*>(ptr);
-		for(usize i = 0; i < nbytes; i += 1){
-			zero[i] = 0;
+		if(ptr != nullptr){
+			byte* zp = static_cast<byte*>(ptr);
+			for(usize i = 0; i < nbytes; i += 1){
+				zp[i] = 0;
+			}
 		}
 		return ptr;
 	}
@@ -46,32 +49,32 @@ struct Linear_Alloc {
 	}
 };
 
-void init_linear_alloc(Linear_Alloc& al, void* buf, usize buf_len, usize align = alignof(max_align_t)){
+static void init_linear_alloc(Linear_Alloc& al, void* buf, usize buf_len, usize align = alignof(max_align_t)){
 	al.buf   = static_cast<byte*>(buf);
 	al.cap   = buf_len;
 	al.off   = 0;
 	al.align = align;
 }
 
-void init_linear_alloc(Linear_Alloc& al, usize buf_len, usize align = alignof(max_align_t)){
+static void init_linear_alloc(Linear_Alloc& al, usize buf_len, usize align = alignof(max_align_t)){
 	al.buf   = static_cast<byte*>(malloc(buf_len));
 	al.cap   = buf_len;
 	al.off   = 0;
 	al.align = align;
 }
 
-Linear_Alloc make_linear_alloc(void* buf, usize buf_len, usize align = alignof(max_align_t)){
+static Linear_Alloc make_linear_alloc(void* buf, usize buf_len, usize align = alignof(max_align_t)){
 	Linear_Alloc al;
 	init_linear_alloc(al, buf, buf_len, align);
 	return al;
 }
 
-Linear_Alloc make_linear_alloc(usize buf_len, usize align = alignof(max_align_t)){
+static Linear_Alloc make_linear_alloc(usize buf_len, usize align = alignof(max_align_t)){
 	Linear_Alloc al;
 	return al;
 }
 
-void destroy_linear_alloc(Linear_Alloc& al, bool free_buf = false){
+static void destroy_linear_alloc(Linear_Alloc& al, bool free_buf = false){
 	if(free_buf){ free(al.buf); }
 	al.buf   = nullptr;
 	al.align = 0;
@@ -81,7 +84,8 @@ void destroy_linear_alloc(Linear_Alloc& al, bool free_buf = false){
 
 template<class T>
 T* make(usize n, Linear_Alloc& al){
-	T* ptr = static_cast<T*>(al.alloc(sizeof(T) * n));
+	T* ptr = static_cast<T*>(al.zalloc(sizeof(T) * n));
 	return ptr;
 }
 
+#endif /* header guard */

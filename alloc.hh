@@ -1,3 +1,6 @@
+#ifndef INCLUDE_ALLOC_HH_
+#define INCLUDE_ALLOC_HH_
+
 #include "types.hh"
 #include <assert.h>
 
@@ -37,3 +40,5 @@ static usize align_forward_size(usize ptr, usize align){
 	return p;
 }
 
+
+#endif /* header guard */
