@@ -1,19 +1,24 @@
 #include <cstdlib>
 #include <iostream>
+
 #include "maybe.hh"
 #include "test.hh"
 #include "linear_alloc.hh"
+
 #define print(x) std::cout << x << '\n'
 
-void test_linear_alloc(){
+i32 test_linear_alloc(){
 	Test_Init("Linear allocator");
 	usize buflen = KiB(1);
 	usize align = alignof(max_align_t);
-	Linear_Alloc al = Linear_Alloc(malloc(buflen), buflen, align);
+	Linear_Alloc al = make_linear_alloc(malloc(buflen), buflen, align);
 	Test_Log("Init");
 	Test_Exp(buflen, al.cap);
 	Test_Exp(0, al.off);
 	Test_Exp(align, al.align);
+
+	Test_Log("alloc(0)");
+	Test_Exp(nullptr, al.alloc(0));
 
 	Test_Log("Fill");
 	Test_Exp(false, al.buf == nullptr);
@@ -35,9 +40,16 @@ void test_linear_alloc(){
 	vec2 = make<i32>(69, al);
 	Test_Exp(true, nullptr != vec2);
 
+	Test_Log("Destroy");
+	destroy_linear_alloc(al, true);
+	Test_Exp(0, al.cap);
+	Test_Exp(0, al.off);
+	Test_Exp(0, al.align);
+	Test_Exp(nullptr, al.buf);
+
 	Test_End();
 }
 int main(int argc, const char** argv){
-	test_linear_alloc();
-	return 0;
+	i32 results = test_linear_alloc();
+	return results;
 }

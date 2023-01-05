@@ -15,29 +15,31 @@ static inline void Test_Log(const char* msg){
 }
 
 #define Test_Init(name) \
-	bool test_ok_ = true;\
-	int test_failed_ = 0;\
-	int test_count_ = 0;\
-	const char* test_name_ = #name;\
+	struct Test {\
+		i32 failed = 0;\
+		i32 total  = 0;\
+		bool ok    = true;\
+	} test_;\
 	fprintf(stderr, "[ %s%s%s ]\n", COL_CYAN, #name, COL_RESET);
 
 #define Test_Exp(expect, expr) {\
-	test_count_ += 1;\
+	test_.total += 1;\
 	if((expect) == (expr)){\
 		fprintf(stderr, "\t%sOK%s    ", COL_GREEN, COL_RESET);\
 	} else {\
 		fprintf(stderr, "\t%sFAIL%s  ", COL_RED, COL_RESET);\
-		test_ok_ = false;\
-		test_failed_ += 1;\
+		test_.ok = false;\
+		test_.failed += 1;\
 	}\
 	fprintf(stderr, "%s %s::%s %s\n", #expr, COL_BLK, COL_RESET, #expect);\
 }
 
 #define Test_End() \
-	if(test_ok_){\
-		fprintf(stderr, "[ %sPASSED%s ] ok: %d/%d\n", COL_GREEN, COL_RESET, test_count_ - test_failed_, test_count_);\
+	if(test_.ok){\
+		fprintf(stderr, "[ %sPASSED%s ] ok: %d/%d\n", COL_GREEN, COL_RESET, test_.total - test_.failed, test_.total);\
 	} else {\
-		fprintf(stderr, "[ %sFAILED%s ] ok: %d/%d\n", COL_RED, COL_RESET, test_count_ - test_failed_, test_count_);\
-	}
+		fprintf(stderr, "[ %sFAILED%s ] ok: %d/%d\n", COL_RED, COL_RESET, test_.total - test_.failed, test_.total);\
+	}\
+	return test_.failed;
 
 
