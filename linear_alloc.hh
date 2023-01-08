@@ -49,27 +49,27 @@ struct Linear_Alloc {
 	}
 };
 
-static void init_linear_alloc(Linear_Alloc& al, void* buf, usize buf_len, usize align = alignof(max_align_t)){
+static void init_linear_alloc(Linear_Alloc& al, void* buf, usize buf_len, usize align = DEF_ALIGN){
 	al.buf   = static_cast<byte*>(buf);
 	al.cap   = buf_len;
 	al.off   = 0;
 	al.align = align;
 }
 
-static void init_linear_alloc(Linear_Alloc& al, usize buf_len, usize align = alignof(max_align_t)){
+static void init_linear_alloc(Linear_Alloc& al, usize buf_len, usize align = DEF_ALIGN){
 	al.buf   = static_cast<byte*>(malloc(buf_len));
 	al.cap   = buf_len;
 	al.off   = 0;
 	al.align = align;
 }
 
-static Linear_Alloc make_linear_alloc(void* buf, usize buf_len, usize align = alignof(max_align_t)){
+static Linear_Alloc make_linear_alloc(void* buf, usize buf_len, usize align = DEF_ALIGN){
 	Linear_Alloc al;
 	init_linear_alloc(al, buf, buf_len, align);
 	return al;
 }
 
-static Linear_Alloc make_linear_alloc(usize buf_len, usize align = alignof(max_align_t)){
+static Linear_Alloc make_linear_alloc(usize buf_len, usize align = DEF_ALIGN){
 	Linear_Alloc al;
 	return al;
 }

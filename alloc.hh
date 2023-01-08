@@ -4,6 +4,8 @@
 #include "types.hh"
 #include <assert.h>
 
+static constexpr usize DEF_ALIGN = alignof(max_align_t);
+
 static inline usize KiB(usize n) { return n * 1024; }
 static inline usize MiB(usize n) { return n * 1024 * 1024; }
 static inline usize GiB(usize n) { return n * 1024 * 1024 * 1024; }
