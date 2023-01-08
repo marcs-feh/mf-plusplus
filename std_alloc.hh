@@ -1,7 +1,7 @@
 #include "alloc.hh"
 #include <stdlib.h>
 
-struct Std_Alloc {
+struct LibC_Alloc {
 	void* alloc(usize nbytes){
 		return malloc(nbytes);
 	}
@@ -20,4 +20,5 @@ struct Std_Alloc {
 	void free(void* ptr){
 		free(ptr);
 	}
-};
+} static std_alloc;
+

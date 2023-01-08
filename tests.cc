@@ -3,24 +3,29 @@
 #include "linear_alloc.hh"
 #include "pool_alloc.hh"
 
+i32 test_pool_alloc(){
+	Test_Init("Pool Allocator");
+	Test_End();
+}
+
 i32 test_maybe(){
 	Test_Init("Maybe types");
 	Maybe<i32> a, b;
 	Test_Log("Initialization");
-	Test_Exp(Nil, a);
+	Test_Exp(nil, a);
 	Test_Log("Assignment");
 	a = 7;
 	Test_Exp(true, a == 7);
-	a = Nil;
-	Test_Exp(true, a == Nil);
+	a = nil;
+	Test_Exp(true, a == nil);
 	Test_Log("Identity");
-	Test_Exp(true, Nil == Nil);
-	Test_Exp(false, Nil != Nil);
+	Test_Exp(true, nil == nil);
+	Test_Exp(false, nil != nil);
 	Test_Log("Equality(maybe/nil)");
-	Test_Exp(true, a == Nil);
-	Test_Exp(true, Nil == a);
-	Test_Exp(false, a != Nil);
-	Test_Exp(false, Nil != a);
+	Test_Exp(true, a == nil);
+	Test_Exp(true, nil == a);
+	Test_Exp(false, a != nil);
+	Test_Exp(false, nil != a);
 	Test_Log("Equality(maybe/non-maybe)");
 	i32 num = 6;
 	a = num;
@@ -29,7 +34,7 @@ i32 test_maybe(){
 	Test_Exp(false, num != a);
 	Test_Exp(false, a != num);
 	Test_Log("Equality(maybe/maybe)");
-	a = Nil;
+	a = nil;
 	Test_Exp(true, a == b);
 	Test_Exp(true, b == a);
 	Test_Exp(false, a != b);
@@ -39,18 +44,21 @@ i32 test_maybe(){
 	Test_Exp(false, b == a);
 	Test_Exp(true, a != b);
 	Test_Exp(true, b != a);
+	Test_Log("Boolean conversion");
+	Maybe<f32> n;
+	Test_Exp(false, !!n);
+	n = 8.4;
+	Test_Exp(true, !!n);
 	Test_End();
 }
 
 i32 test_linear_alloc(){
 	Test_Init("Linear allocator");
 	usize buflen = KiB(1);
-	usize align = alignof(max_align_t);
-	Linear_Alloc al = make_linear_alloc(malloc(buflen), buflen, align);
+	Linear_Alloc al = make_linear_alloc(malloc(buflen), buflen);
 	Test_Log("Init");
 	Test_Exp(buflen, al.cap);
 	Test_Exp(0, al.off);
-	Test_Exp(align, al.align);
 	Test_Exp(true, nullptr != al.buf);
 
 	Test_Log("alloc(0)");
@@ -82,7 +90,6 @@ i32 test_linear_alloc(){
 	destroy_linear_alloc(al, true);
 	Test_Exp(0, al.cap);
 	Test_Exp(0, al.off);
-	Test_Exp(0, al.align);
 	Test_Exp(nullptr, al.buf);
 
 	Test_End();

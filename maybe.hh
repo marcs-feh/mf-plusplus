@@ -1,5 +1,5 @@
 struct Nil_Type {};
-constexpr Nil_Type Nil;
+constexpr Nil_Type nil;
 
 template<class T>
 struct Maybe {
@@ -111,4 +111,11 @@ static bool operator==(const Nil_Type&, const Nil_Type&){ return true; }
 
 // nil != nil
 static bool operator!=(const Nil_Type& left, const Nil_Type& right){ return !(left == right); }
+
+// boolean conversion
+template<class T>
+bool operator!(const Maybe<T>& opt){
+	if(opt.is_nil){ return true; }
+	return !opt.data;
+}
 
