@@ -1,3 +1,6 @@
+#ifndef INCLUDE_TEST_HH_
+#define INCLUDE_TEST_HH_
+
 #include "types.hh"
 #include <stdio.h>
 
@@ -43,3 +46,5 @@ static inline void Test_Log(const char* msg){
 	return test_.failed;
 
 
+
+#endif /* header guard */

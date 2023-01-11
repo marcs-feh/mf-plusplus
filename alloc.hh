@@ -42,5 +42,4 @@ static usize align_forward_size(usize ptr, usize align){
 	return p;
 }
 
-
 #endif /* header guard */

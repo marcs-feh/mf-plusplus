@@ -1,3 +1,6 @@
+#ifndef INCLUDE_MAYBE_HH_
+#define INCLUDE_MAYBE_HH_
+
 struct Nil_Type {};
 constexpr Nil_Type nil;
 
@@ -119,3 +122,5 @@ bool operator!(const Maybe<T>& opt){
 	return !opt.data;
 }
 
+
+#endif /* header guard */

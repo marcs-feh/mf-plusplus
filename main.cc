@@ -13,7 +13,8 @@ i32 test_pool_alloc(){
 	Test_End();
 }
 int main(int argc, const char** argv){
-	i32 results = test_linear_alloc()
+	i32 results =
+		+ test_linear_alloc()
 		+ test_maybe()
 		+ test_pool_alloc();
 	return results;
