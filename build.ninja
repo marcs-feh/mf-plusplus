@@ -1,0 +1,22 @@
+cc = clang++
+ld = clang++ -fuse-ld=mold
+ar = ar
+cflags = -O2 -g -pipe -std=c++20 -Wall -Wextra
+ldflags =
+
+rule cc
+  command = $cc $cflags -c $in -o $out
+
+rule bin
+  command = $ld $in -o $out $ldflags
+
+rule ar
+  command = $ar rcs $out $in
+
+build bin/libmf.a: ar bin/linear_alloc.cc.o
+
+build bin/test: bin bin/main.cc.o | bin/libmf.a
+  ldflags = -Lbin -lmf
+
+build bin/linear_alloc.cc.o: cc linear_alloc.cc
+build bin/main.cc.o: cc main.cc

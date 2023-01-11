@@ -3,7 +3,7 @@
 #include "linear_alloc.hh"
 #include "pool_alloc.hh"
 
-i32 test_maybe(){
+static i32 test_maybe(){
 	Test_Init("Maybe types");
 	Maybe<i32> a, b;
 	Test_Log("Initialization");
@@ -47,7 +47,7 @@ i32 test_maybe(){
 	Test_End();
 }
 
-i32 test_linear_alloc(){
+static i32 test_linear_alloc(){
 	Test_Init("Linear allocator");
 	usize buflen = KiB(1);
 	Linear_Alloc al = make_linear_alloc(malloc(buflen), buflen);

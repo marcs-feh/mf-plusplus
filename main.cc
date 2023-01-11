@@ -3,7 +3,7 @@
 #define print(x) std::cout << x << '\n'
 
 #include "log.hh"
-#include "tests.cc"
+#include "tests.hh"
 
 i32 test_pool_alloc(){
 	Test_Init("Pool allocator");
@@ -13,6 +13,7 @@ i32 test_pool_alloc(){
 	Test_Exp(true, al.buf != nullptr);
 	Test_End();
 }
+
 int main(int argc, const char** argv){
 	i32 results =
 		+ test_linear_alloc()
