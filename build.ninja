@@ -1,7 +1,7 @@
 cc = clang++
 ld = clang++ -fuse-ld=mold
 ar = ar
-cflags = -O2 -g -pipe -std=c++20 -Wall -Wextra
+cflags = -O2 -g -pipe -std=c++11 -Wall -Wextra
 ldflags =
 
 rule cc
@@ -13,10 +13,12 @@ rule bin
 rule ar
   command = $ar rcs $out $in
 
-build bin/libmf.a: ar bin/linear_alloc.cc.o
+build bin/libmf.a: ar bin/linear_alloc.cc.o bin/pool_alloc.cc.o bin/alloc.cc.o
 
 build bin/test: bin bin/main.cc.o | bin/libmf.a
   ldflags = -Lbin -lmf
 
 build bin/linear_alloc.cc.o: cc linear_alloc.cc
+build bin/pool_alloc.cc.o: cc pool_alloc.cc
+build bin/alloc.cc.o: cc alloc.cc
 build bin/main.cc.o: cc main.cc

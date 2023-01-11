@@ -27,7 +27,7 @@ struct Maybe {
 		}
 	}
 
-	Maybe(const Nil_Type& nil_val){
+	Maybe(const Nil_Type& ){
 		this->is_nil = true;
 	}
 
@@ -54,13 +54,13 @@ struct Maybe {
 
 // maybe == nil
 template<class T>
-bool operator==(const Maybe<T>& left, const Nil_Type& nil_val){
+bool operator==(const Maybe<T>& left, const Nil_Type& ){
 	return left.is_nil;
 }
 
 // nil == maybe
 template<class T>
-bool operator==(const Nil_Type& nil_val, const Maybe<T>& right){
+bool operator==(const Nil_Type& , const Maybe<T>& right){
 	return right.is_nil;
 }
 // maybe == non-maybe
@@ -90,11 +90,11 @@ bool operator==(const Maybe<T>& left, const Maybe<T>& right){
 
 // maybe != nil
 template<class T>
-bool operator!=(const Maybe<T>& left, const Nil_Type& nil_val){ return !(left.is_nil); }
+bool operator!=(const Maybe<T>& left, const Nil_Type& ){ return !(left.is_nil); }
 
 // nil != maybe
 template<class T>
-bool operator!=(const Nil_Type& nil_val, const Maybe<T>& right){ return !(right.is_nil); }
+bool operator!=(const Nil_Type& , const Maybe<T>& right){ return !(right.is_nil); }
 
 // maybe != non-maybe
 template<class T>
