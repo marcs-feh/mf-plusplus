@@ -3,11 +3,6 @@
 #include "linear_alloc.hh"
 #include "pool_alloc.hh"
 
-i32 test_pool_alloc(){
-	Test_Init("Pool Allocator");
-	Test_End();
-}
-
 i32 test_maybe(){
 	Test_Init("Maybe types");
 	Maybe<i32> a, b;
