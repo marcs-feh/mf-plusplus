@@ -2,6 +2,7 @@
 #include <iostream>
 #define print(x) std::cout << x << '\n'
 
+#include "log.hh"
 #include "tests.cc"
 
 i32 test_pool_alloc(){
